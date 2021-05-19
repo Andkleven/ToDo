@@ -2,8 +2,6 @@ import { useCallback } from "react";
 import { useRouter } from "next/router";
 import { useAuth } from "../context/auth.tsx";
 import { Form, Button } from "react-bootstrap";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSignInAlt } from "@fortawesome/free-solid-svg-icons";
 import GoogleLogin from "../components/GoogleLogin";
 
 export default function Login() {
@@ -15,7 +13,7 @@ export default function Login() {
       const { email, password } = event.target.elements;
       signInWithEmailAndPassword({ redirect: "/", email, password });
     },
-    [router]
+    [signInWithEmailAndPassword]
   );
 
   if (user) {
@@ -30,13 +28,13 @@ export default function Login() {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: "#42a5f5",
+        backgroundColor: "#42a5f5"
       }}
     >
       <div
         style={{
           backgroundColor: "rgb(255, 255, 255)",
-          borderRadius: "5px",
+          borderRadius: "5px"
         }}
       >
         <div className="p-3 w-100">
@@ -62,7 +60,7 @@ export default function Login() {
               className="w-100 mb-3 text-light"
               type="submit"
             >
-              Login <FontAwesomeIcon icon={faSignInAlt} />
+              Login
             </Button>
           </Form>
           <GoogleLogin />
