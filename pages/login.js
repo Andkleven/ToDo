@@ -1,4 +1,3 @@
-import { useCallback } from "react";
 import { useRouter } from "next/router";
 import { useAuth } from "../context/auth.tsx";
 import { Form, Button } from "react-bootstrap";
@@ -7,14 +6,11 @@ import GoogleLogin from "../components/GoogleLogin";
 export default function Login() {
   const router = useRouter();
   const { user, signInWithEmailAndPassword } = useAuth();
-  const handleLoginPassword = useCallback(
-    async (event) => {
-      event.preventDefault();
-      const { email, password } = event.target.elements;
-      signInWithEmailAndPassword({ redirect: "/", email, password });
-    },
-    [signInWithEmailAndPassword]
-  );
+  const handleLoginPassword = async (event) => {
+    event.preventDefault();
+    const { email, password } = event.target.elements;
+    signInWithEmailAndPassword({ redirect: "/", email, password });
+  };
 
   if (user) {
     router.push("/");

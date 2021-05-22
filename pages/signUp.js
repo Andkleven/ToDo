@@ -1,15 +1,14 @@
-import { useCallback } from "react";
 import { Form, Button } from "react-bootstrap";
 import GoogleLogin from "../components/GoogleLogin";
 import { useAuth } from "../context/auth.tsx";
 
 export default function signUp() {
   const { signUpWithEmailAndPassword } = useAuth;
-  const handleSignUpPassword = useCallback(async (event) => {
+  const handleSignUpPassword = async (event) => {
     event.preventDefault();
     const { email, password } = event.target.elements;
     signUpWithEmailAndPassword({ redirect: "/", email, password });
-  }, []);
+  };
   return (
     <div
       style={{
@@ -17,13 +16,13 @@ export default function signUp() {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: "#42a5f5",
+        backgroundColor: "#42a5f5"
       }}
     >
       <div
         style={{
           backgroundColor: "rgb(255, 255, 255)",
-          borderRadius: "5px",
+          borderRadius: "5px"
         }}
       >
         <div className="p-3 w-100">
