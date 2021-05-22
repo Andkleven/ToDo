@@ -3,7 +3,7 @@ import {
   useEffect,
   useContext,
   createContext,
-  ReactNode,
+  ReactNode
 } from "react";
 import Router from "next/router";
 import firebase from "../firebase/clientApp";
@@ -31,24 +31,39 @@ type Context = {
   signInWithEmailAndPassword: ({
     redirect,
     email,
-    password,
+    password
   }: EmailAndPassword) => Promise<void>;
   signUpWithEmailAndPassword: ({
     redirect,
     email,
-    password,
+    password
   }: EmailAndPassword) => Promise<void>;
   signOut: () => Promise<false | User>;
   getFreshToken: () => Promise<string>;
 };
 
-const AuthContext = createContext<Context | null>(null);
-export default function AuthProvider({ children }: { children: ReactNode }) {
-  const auth = useFirebaseAuth();
-  return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>;
-}
-
-export const useAuth = () => useContext(AuthContext);
+const formatUser = async (user: {
+  getIdTokenResult: (arg0: boolean) => any;
+  uid: any;
+  email: any;
+  displayName: any;
+  providerData: { providerId: any }[];
+  photoURL: any;
+}): Promise<User> => {
+  // const token = await user.getIdToken(/* forceRefresh */ true);
+  const decodedToken = await user.getIdTokenResult(/*forceRefresh*/ true);
+  const { token, expirationTime } = decodedToken;
+  return {
+    uid: user.uid,
+    email: user.email,
+    name: user.displayName,
+    provider: user.providerData[0].providerId,
+    photoUrl: user.photoURL,
+    token,
+    expirationTime
+    // stripeRole: await getStripeRole(),
+  };
+};
 
 function useFirebaseAuth(): Context {
   const [user, setUser] = useState(null);
@@ -93,7 +108,7 @@ function useFirebaseAuth(): Context {
   const signInWithEmailAndPassword = ({
     redirect,
     email,
-    password,
+    password
   }: EmailAndPassword) => {
     setLoading(true);
     return firebase
@@ -110,7 +125,7 @@ function useFirebaseAuth(): Context {
   const signUpWithEmailAndPassword = ({
     redirect,
     email,
-    password,
+    password
   }: EmailAndPassword) => {
     setLoading(true);
     return firebase
@@ -153,28 +168,14 @@ function useFirebaseAuth(): Context {
     signInWithEmailAndPassword,
     signUpWithEmailAndPassword,
     signOut,
-    getFreshToken,
+    getFreshToken
   };
 }
-const formatUser = async (user: {
-  getIdTokenResult: (arg0: boolean) => any;
-  uid: any;
-  email: any;
-  displayName: any;
-  providerData: { providerId: any }[];
-  photoURL: any;
-}): Promise<User> => {
-  // const token = await user.getIdToken(/* forceRefresh */ true);
-  const decodedToken = await user.getIdTokenResult(/*forceRefresh*/ true);
-  const { token, expirationTime } = decodedToken;
-  return {
-    uid: user.uid,
-    email: user.email,
-    name: user.displayName,
-    provider: user.providerData[0].providerId,
-    photoUrl: user.photoURL,
-    token,
-    expirationTime,
-    // stripeRole: await getStripeRole(),
-  };
-};
+
+const AuthContext = createContext<Context | null>(null);
+export default function AuthProvider({ children }: { children: ReactNode }) {
+  const auth = useFirebaseAuth();
+  return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>;
+}
+
+export const useAuth = () => useContext(AuthContext);
