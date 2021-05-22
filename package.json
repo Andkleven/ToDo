@@ -16,7 +16,6 @@
     "firebase": "7.17.0",
     "firebase-admin": "9.0.0",
     "next": "latest",
-    "next-pwa": "^5.2.15",
     "react": "^16.13.0",
     "react-bootstrap": "^1.5.2",
     "react-dom": "^16.13.0",
