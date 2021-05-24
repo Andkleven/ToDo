@@ -1,1 +1,1 @@
-
+# NextJS with firebase auth
